@@ -1,4 +1,4 @@
-const eventService = require("../services/eventService");
+const eventService = require("./eventService");
 
 // Create a new event ==== API: ("/events") === Method :[ POST]
 exports.createEvent = async (req, res) => {

@@ -1,4 +1,4 @@
-const config = require("../config/config");
+const config = require("../../config/config");
 const { Sequelize, DataTypes } = require("sequelize");
 console.log(config);
 
@@ -12,8 +12,8 @@ const sequelize = new Sequelize(
   }
 );
 
-const Event = require("./event")(sequelize, DataTypes);
-const Participant = require("./participant")(sequelize, DataTypes);
+const Event = require("../modules/event/event")(sequelize, DataTypes);
+const Participant = require("../modules/participant/participant")(sequelize, DataTypes);
 
 Event.hasMany(Participant, { foreignKey: "eventId" });
 Participant.belongsTo(Event, { foreignKey: "eventId" });

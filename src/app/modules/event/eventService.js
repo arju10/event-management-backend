@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Event, Participant } = require("../models");
+const { Event, Participant } = require("../../models");
 
 // Helper function to check for time conflicts
 async function checkTimeConflict(event) {
