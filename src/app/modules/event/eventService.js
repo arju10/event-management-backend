@@ -54,7 +54,10 @@ async function getAllEvents(page = 1, limit = 10) {
   return Event.findAndCountAll({
     limit: parseInt(limit),
     offset: (page - 1) * limit,
-    include: [Participant], // Include participants in the result
+    include: [  {
+      model: Participant,
+      attributes: ['email'], 
+    },], 
   });
 }
 
@@ -97,6 +100,69 @@ async function deleteEvent(id) {
 }
 
 // Add a participant to an event ==== API: ("/events/:id/participants") === Method :[ POST]
+// async function addParticipant(eventId, participantData) {
+//   const event = await Event.findByPk(eventId);
+//   if (!event) {
+//     throw new Error("Event not found");
+//   }
+
+//   const { email } = participantData;
+
+//   const conflictingParticipant = await Participant.findOne({
+//     where: {
+//       email,
+//       eventId: {
+//         [Op.ne]: eventId,
+//       },
+//     },
+//     include: {
+//       model: Event,
+//       where: {
+//         date: event.date,
+//         [Op.or]: [
+//           {
+//             startTime: {
+//               [Op.between]: [event.startTime, event.endTime],
+//             },
+//           },
+//           {
+//             endTime: {
+//               [Op.between]: [event.startTime, event.endTime],
+//             },
+//           },
+//           {
+//             [Op.and]: [
+//               {
+//                 startTime: {
+//                   [Op.lte]: event.startTime,
+//                 },
+//               },
+//               {
+//                 endTime: {
+//                   [Op.gte]: event.endTime,
+//                 },
+//               },
+//             ],
+//           },
+//         ],
+//       },
+//     },
+//   });
+
+//   if (conflictingParticipant) {
+//     throw new Error(
+//       "Participant is already assigned to another event at the same time on this date."
+//     );
+//   }
+
+//   return Participant.create({
+//     ...participantData,
+//     eventId,
+//   });
+// }
+
+
+// Add a participant to an event ==== API: ("/events/:id/participants") === Method :[ POST]
 async function addParticipant(eventId, participantData) {
   const event = await Event.findByPk(eventId);
   if (!event) {
@@ -105,6 +171,7 @@ async function addParticipant(eventId, participantData) {
 
   const { email } = participantData;
 
+  // Check if the participant is already assigned to another event with time conflicts
   const conflictingParticipant = await Participant.findOne({
     where: {
       email,
@@ -152,9 +219,10 @@ async function addParticipant(eventId, participantData) {
     );
   }
 
+  // Create the participant with the event ID
   return Participant.create({
     ...participantData,
-    eventId,
+    eventId, // Include the eventId
   });
 }
 
