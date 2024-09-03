@@ -1,8 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const eventRoutes = require("./src/app/modules/event/eventRoutes");
-const { sequelize } = require("./src/app/models");
-
+const { sequelize } = require("./src/app/models/index");
 const app = express();
 
 app.use(bodyParser.json());
@@ -11,7 +10,7 @@ app.use(bodyParser.json());
 sequelize
   .authenticate()
   .then(() => {
-    console.log("Connection has been established successfully.");
+    console.log("Connection has been established successfully.!!!!!!!");
   })
   .catch((err) => {
     console.error("Unable to connect to the database:", err);

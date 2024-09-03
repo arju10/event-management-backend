@@ -1,9 +1,11 @@
 module.exports = {
   development: {
-    username: "arju",
-    password: "arju10@#",
-    database: "event_management",
-    host: "127.0.0.1",
+    host: "sql12.freesqldatabase.com",
+    user: "sql12729063",
+    password: "NPH9kbIuNT",
+    database: "sql12729063",
+    port: 3306,
     dialect: "mysql",
   },
 };
+
